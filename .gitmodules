@@ -1,0 +1,3 @@
+[submodule "submodule/mongodb"]
+	path = submodule/mongodb
+	url = https://github.com/chum-ch/mongodb.git
