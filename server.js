@@ -1,8 +1,10 @@
 const express = require('express');
-// Import file
+const cors = require('cors');
 const IndexAPI = require('./apis/index');
-const app = express();
 
+const app = express();
+// Enable CORS for all routes
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.status(200).send('Welcome to my sms! 🥰');
