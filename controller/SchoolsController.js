@@ -23,7 +23,7 @@ const createSchool = async function createSchool(req) {
       const school = await db.cnInsertOneItem(req, schoolCollection.schools);
       resolve(Service.successResponse(school, statusCode.OK));
     } catch (error) {
-      console.log('Error create school', error);
+      console.error('Error create school', error);
       reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
     }
   });
@@ -35,7 +35,7 @@ const getSchool = async function getSchool(req) {
       const school = await db.cnGetItem(req.params.schoolId);
       resolve(Service.successResponse(school, statusCode.OK));
     } catch (error) {
-      console.log('Error get school', error);
+      console.error('Error get school', error);
       reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
     }
   });
@@ -47,7 +47,7 @@ const updateSchool = async function updateSchool(req) {
       const school = await db.cnUpdateOneItem(req, req.params.schoolId);
       resolve(Service.successResponse(school, statusCode.OK));
     } catch (error) {
-      console.log('Error update school', error);
+      console.error('Error update school', error);
       reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
     }
   });
@@ -59,7 +59,7 @@ const deleteSchool = async function deleteSchool(req) {
       const school = await db.cnDeleteOneItem(req.params.schoolId);
       resolve(Service.successResponse(school, statusCode.OK));
     } catch (error) {
-      console.log('Error delete school', error);
+      console.error('Error delete school', error);
       reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
     }
   });

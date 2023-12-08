@@ -6,7 +6,7 @@ const listSchools = async function listSchools(req, res) {
     const schools = await API.SchoolsController.listSchools(req);
     res.status(schools.StatusCode).send(schools.data);
   } catch (error) {
-    console.log('API List school error', error);
+    console.error('API List school error', error);
     res.status(error.StatusCode).send(error.data);
   }
 };
@@ -16,7 +16,7 @@ const createSchool = async function createSchool(req, res) {
     const school = await API.SchoolsController.createSchool(req);
     res.status(school.StatusCode).send(school.data);
   } catch (error) {
-    console.log('API Error create school', error);
+    console.error('API Error create school', error);
     res.status(error.StatusCode).send(error);
   }
 };
@@ -26,7 +26,7 @@ const getSchool = async function getSchool(req, res) {
     const school = await API.SchoolsController.getSchool(req);
     res.status(school.StatusCode).send(school.data);
   } catch (error) {
-    console.log('API Error get school', error);
+    console.error('API Error get school', error);
     res.status(error.StatusCode).send(error);
   }
 };
@@ -36,7 +36,7 @@ const updateSchool = async function updateSchool(req, res) {
     const school = await API.SchoolsController.updateSchool(req);
     res.status(school.StatusCode).send(school.data);
   } catch (error) {
-    console.log('API Error update school', error);
+    console.error('API Error update school', error);
     res.status(error.StatusCode).send(error);
   }
 };
@@ -46,7 +46,7 @@ const deleteSchool = async function deleteSchool(req, res) {
     const school = await API.SchoolsController.deleteSchool(req);
     res.status(school.StatusCode).send(school.data);
   } catch (error) {
-    console.log('API Error delete school', error);
+    console.error('API Error delete school', error);
     res.status(error.StatusCode).send(error);
   }
 };
