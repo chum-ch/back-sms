@@ -29,7 +29,7 @@ const createRoom = async function createRoom(req) {
       const input = req.body;
       if (!input.Name) {
         throw new CustomError({
-          key: KeyError.ResourceNotFound,
+          key: KeyError.InputValidation,
         });
       }
       req.body.SCHOOLS_ID = req.params.schoolId;
@@ -49,10 +49,14 @@ const uploadRoom = async function uploadRoom(req) {
         resultValidation.ErrorColumnHeaders.length > 0
         || resultValidation.ErrorRows.length > 0
       ) {
-        throw resultValidation;
+        throw new CustomError(
+          {
+            key: KeyError.InputValidation,
+            message: resultValidation,
+          },
+        );
       } else {
         const { progresses } = await db.cnListCollection();
-
         const sheetData = UploadFile.readExcelFile(req, roomRule);
         const data = UploadFile.getDataAfterValidateExcel(sheetData);
         req.body = {

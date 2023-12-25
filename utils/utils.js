@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 const XLSX = require('xlsx');
+const { CustomError, KeyError } = require('../submodule/handle-error/index');
 
 class UploadFile {
   static validateHeaders(arrHeaderExcel, schemas) {
@@ -14,45 +15,57 @@ class UploadFile {
   }
 
   static validateRows(sheetData, schemas) {
-    const { ColumnHeader, DataStartingRow } = schemas;
-    const resultValidationRow = [];
-    for (let rowIndex = 0; rowIndex < sheetData.length; rowIndex += 1) {
-      const errorDetails = {
-        RowNumber: DataStartingRow + rowIndex + 1,
-        Columns: [],
-      };
-      for (const [columnIndex, [key, value]] of Object.entries(
-        ColumnHeader,
-      ).entries()) {
-        const { Rules, Message } = value;
-        const cellValue = sheetData[rowIndex][columnIndex];
-        for (const rule of Rules) {
-          if (rule.Required && !cellValue) {
-            errorDetails.Columns.push({ [key]: Message });
+    try {
+      const { ColumnHeader, DataStartingRow } = schemas;
+      const resultValidationRow = [];
+      for (let rowIndex = 0; rowIndex < sheetData.length; rowIndex += 1) {
+        const errorDetails = {
+          RowNumber: DataStartingRow + rowIndex + 1,
+          Columns: [],
+        };
+        for (const [columnIndex, [key, value]] of Object.entries(
+          ColumnHeader,
+        ).entries()) {
+          const { Rules, Message } = value;
+          const cellValue = sheetData[rowIndex][columnIndex];
+          for (const rule of Rules) {
+            if (rule.Required && !cellValue) {
+              errorDetails.Columns.push({ [key]: Message });
+            }
           }
         }
+        if (errorDetails.Columns.length > 0) {
+          resultValidationRow.push(errorDetails);
+        }
       }
-      if (errorDetails.Columns.length > 0) {
-        resultValidationRow.push(errorDetails);
-      }
+      return resultValidationRow;
+    } catch (error) {
+      const e = error;
+      throw e;
     }
-    return resultValidationRow;
   }
 
   static readExcelFile(req, schemas) {
     try {
-      let message = '';
       if (!req.file) {
-        message = 'File not found.';
-        throw message;
+        throw new CustomError(
+          {
+            key: KeyError.InputValidation,
+            message: 'Required file Excel upload.',
+          },
+        );
       } else {
         const { buffer } = req.file;
         // Read data in file excel
         const worksheet = XLSX.read(buffer, { type: 'buffer' });
         // Loop each sheet.
         if (worksheet.SheetNames.length !== 1) {
-          message = 'Please upload only one sheet.';
-          throw message;
+          throw new CustomError(
+            {
+              key: KeyError.InputValidation,
+              message: 'Please upload only one sheet.',
+            },
+          );
         } else {
           const name = worksheet.SheetNames[0];
           const sheet = worksheet.Sheets[name];
@@ -69,8 +82,8 @@ class UploadFile {
         }
       }
     } catch (error) {
-      console.error(error);
-      throw error;
+      const e = error;
+      throw e;
     }
   }
 
@@ -90,12 +103,12 @@ class UploadFile {
       resultValidation.ErrorRows = this.validateRows(sheetData, schemas);
       return resultValidation;
     } catch (error) {
-      console.error(error);
-      throw error;
+      const err = error;
+      throw err;
     }
   }
 
-  getTemplate(schemas) {
+  static getTemplate(schemas) {
     try {
       const { ColumnHeader } = schemas;
       const dataDownload = {};
@@ -112,11 +125,12 @@ class UploadFile {
       }
       return [dataDownload];
     } catch (error) {
-      throw new Error(error);
+      const err = error;
+      throw err;
     }
   }
 
-  getDataAfterValidateExcel(sheetData) {
+  static getDataAfterValidateExcel(sheetData) {
     const keys = sheetData[0];
     const result = sheetData.slice(1).map((row) => keys.reduce((obj, key, index) => {
       obj[key] = row[index];

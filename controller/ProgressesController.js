@@ -1,7 +1,8 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable no-console */
 const db = require('../submodule/mongodb/mongodb');
-const { statusCode, getBatchProgress } = require('../utils/utils');
+const { getBatchProgress } = require('../utils/utils');
+const { statusCode } = require('../submodule/handle-error/index');
 const Service = require('./Service');
 
 const listProgresses = function listProgresses(req) {
