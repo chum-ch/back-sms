@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const API = require('../controller/index');
+const { CustomError } = require('../submodule/handle-error/index');
 
 const listClasses = async function listClasses(req, res) {
   try {
@@ -9,7 +10,7 @@ const listClasses = async function listClasses(req, res) {
     res.status(classes.StatusCode).send(classes.data);
   } catch (error) {
     console.log('API error list classes', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -20,7 +21,7 @@ const createClass = async function createClass(req, res) {
     res.status(insertClass.StatusCode).send(insertClass.data);
   } catch (error) {
     console.log('API error create class', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -30,7 +31,7 @@ const getClass = async function getClass(req, res) {
     res.status(classItem.StatusCode).send(classItem.data);
   } catch (error) {
     console.log('API error get class', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -43,7 +44,7 @@ const updateClass = async function updateClass(req, res) {
     res.status(classUpdate.StatusCode).send(classUpdate.data);
   } catch (error) {
     console.log('API error update class', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -53,7 +54,7 @@ const deleteClass = async function deleteClass(req, res) {
     res.status(classDelete.StatusCode).send(classDelete.data);
   } catch (error) {
     console.log('API error delete class', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 

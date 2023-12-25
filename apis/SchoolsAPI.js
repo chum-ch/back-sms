@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const API = require('../controller/index');
+const { CustomError } = require('../submodule/handle-error/index');
 
 const listSchools = async function listSchools(req, res) {
   try {
@@ -17,7 +18,7 @@ const createSchool = async function createSchool(req, res) {
     res.status(school.StatusCode).send(school.data);
   } catch (error) {
     console.error('API Error create school', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -27,7 +28,7 @@ const getSchool = async function getSchool(req, res) {
     res.status(school.StatusCode).send(school.data);
   } catch (error) {
     console.error('API Error get school', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -37,7 +38,7 @@ const updateSchool = async function updateSchool(req, res) {
     res.status(school.StatusCode).send(school.data);
   } catch (error) {
     console.error('API Error update school', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -47,7 +48,7 @@ const deleteSchool = async function deleteSchool(req, res) {
     res.status(school.StatusCode).send(school.data);
   } catch (error) {
     console.error('API Error delete school', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 

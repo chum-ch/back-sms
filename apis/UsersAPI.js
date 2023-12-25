@@ -1,8 +1,9 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const API = require('../controller/index');
-const { statusCode } = require('../utils/utils');
+const { statusCode } = require('../submodule/handle-error/index');
 const db = require('../submodule/mongodb/mongodb');
+const { CustomError } = require('../submodule/handle-error/index');
 
 const listUsers = async function listUsers(req, res) {
   try {
@@ -10,7 +11,7 @@ const listUsers = async function listUsers(req, res) {
     res.status(users.StatusCode).send(users.data);
   } catch (error) {
     console.log('Error list users', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -26,7 +27,7 @@ const loginUser = async function loginUser(req, res) {
     }
   } catch (error) {
     console.log('Error login user', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -36,7 +37,7 @@ const createUser = async function createUser(req, res) {
     res.status(statusCode.CREATED).send(user);
   } catch (error) {
     console.log('Error create user', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -46,7 +47,7 @@ const getUser = async function getUser(req, res) {
     res.status(statusCode.OK).send(user);
   } catch (error) {
     console.log('Error list users', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -56,7 +57,7 @@ const updateUser = async function updateUser(req, res) {
     res.status(statusCode.OK).send(user);
   } catch (error) {
     console.log('Error list users', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -66,7 +67,7 @@ const deleteUser = async function deleteUser(req, res) {
     res.status(statusCode.OK).send(user);
   } catch (error) {
     console.log('Error list users', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 

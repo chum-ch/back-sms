@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const db = require('../submodule/mongodb/mongodb');
-const { statusCode } = require('../utils/utils');
+const { statusCode } = require('../submodule/handle-error/index');
 const Service = require('./Service');
 
 const listCourses = async function listCourses(req) {
@@ -13,8 +13,7 @@ const listCourses = async function listCourses(req) {
       // const courses = await db.cnDeleteAllItem(req, courseCollection.courses);
       resolve(Service.successResponse(courses, statusCode.OK));
     } catch (error) {
-      console.log('Error list courses', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -27,8 +26,7 @@ const createCourse = async function createCourse(req) {
       const course = await db.cnInsertOneItem(req, courseCollection.courses);
       resolve(Service.successResponse(course, statusCode.CREATED));
     } catch (error) {
-      console.log('Error create course', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -39,8 +37,7 @@ const getCourse = async function getCourse(req) {
       const course = await db.cnGetItem(req.params.courseId);
       resolve(Service.successResponse(course, statusCode.OK));
     } catch (error) {
-      console.log('Error get course', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -51,8 +48,7 @@ const updateCourse = async function updateCourse(req) {
       const course = await db.cnUpdateOneItem(req, req.params.courseId);
       resolve(Service.successResponse(course, statusCode.OK));
     } catch (error) {
-      console.log('Error update course', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -63,8 +59,7 @@ const deleteCourse = async function deleteCourse(req) {
       const course = await db.cnDeleteOneItem(req.params.courseId);
       resolve(Service.successResponse(course, statusCode.OK));
     } catch (error) {
-      console.log('Error delete course', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };

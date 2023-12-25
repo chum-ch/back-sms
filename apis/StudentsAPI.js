@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const API = require('../controller/index');
+const { CustomError } = require('../submodule/handle-error/index');
 
 const listStudents = async function listStudents(req, res) {
   try {
@@ -9,7 +10,7 @@ const listStudents = async function listStudents(req, res) {
     res.status(students.StatusCode).send(students.data);
   } catch (error) {
     console.log('API error list students', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 const listStudentsUnderSchool = async function listStudentsUnderSchool(req, res) {
@@ -18,7 +19,7 @@ const listStudentsUnderSchool = async function listStudentsUnderSchool(req, res)
     res.status(students.StatusCode).send(students.data);
   } catch (error) {
     console.log('API error list students under school', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -28,7 +29,7 @@ const uploadImage = async function uploadImage(req, res) {
     res.status(student.StatusCode).send(student.data);
   } catch (error) {
     console.log('API error create student', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 const createStudent = async function createStudent(req, res) {
@@ -37,7 +38,7 @@ const createStudent = async function createStudent(req, res) {
     res.status(student.StatusCode).send(student.data);
   } catch (error) {
     console.log('API error create student', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -47,7 +48,7 @@ const getStudent = async function getStudent(req, res) {
     res.status(student.StatusCode).send(student.data);
   } catch (error) {
     console.log('API error get student', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -57,7 +58,7 @@ const updateStudent = async function updateStudent(req, res) {
     res.status(student.StatusCode).send(student.data);
   } catch (error) {
     console.log('API error update student', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -67,7 +68,7 @@ const deleteStudent = async function deleteStudent(req, res) {
     res.status(student.StatusCode).send(student.data);
   } catch (error) {
     console.log('API error delete student', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 

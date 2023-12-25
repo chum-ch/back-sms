@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const API = require('../controller/index');
+const { CustomError } = require('../submodule/handle-error/index');
 
 const listTrainers = async function listTrainers(req, res) {
   try {
@@ -9,7 +10,7 @@ const listTrainers = async function listTrainers(req, res) {
     res.status(trainers.StatusCode).send(trainers.data);
   } catch (error) {
     console.log('API error list trainers', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -19,7 +20,7 @@ const createTrainer = async function createTrainer(req, res) {
     res.status(trainer.StatusCode).send(trainer.data);
   } catch (error) {
     console.log('API error create trainer', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -29,7 +30,7 @@ const getTrainer = async function getTrainer(req, res) {
     res.status(trainer.StatusCode).send(trainer.data);
   } catch (error) {
     console.log('API error get trainer', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -39,7 +40,7 @@ const updateTrainer = async function updateTrainer(req, res) {
     res.status(trainer.StatusCode).send(trainer.data);
   } catch (error) {
     console.log('API error update trainer', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -49,7 +50,7 @@ const deleteTrainer = async function deleteTrainer(req, res) {
     res.status(trainer.StatusCode).send(trainer.data);
   } catch (error) {
     console.log('API error delete trainer', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 

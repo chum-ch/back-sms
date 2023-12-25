@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const db = require('../submodule/mongodb/mongodb');
-const { statusCode } = require('../utils/utils');
+const { statusCode } = require('../submodule/handle-error/index');
 const Service = require('./Service');
 
 const listSchedules = async function listSchedules(req) {
@@ -13,8 +13,7 @@ const listSchedules = async function listSchedules(req) {
       // const schedule = await db.cnDeleteAllItem(req, scheduleCollection.schedules);
       resolve(Service.successResponse(schedule, statusCode.OK));
     } catch (error) {
-      console.log('Error list schedule', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -27,8 +26,7 @@ const createSchedule = async function createSchedule(req) {
       const schedule = await db.cnInsertOneItem(req, scheduleCollection.schedules);
       resolve(Service.successResponse(schedule, statusCode.CREATED));
     } catch (error) {
-      console.log('Error create schedule', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -39,8 +37,7 @@ const getSchedule = async function getSchedule(req) {
       const schedule = await db.cnGetItem(req.params.scheduleId);
       resolve(Service.successResponse(schedule, statusCode.OK));
     } catch (error) {
-      console.log('Error get schedule', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -51,8 +48,7 @@ const updateSchedule = async function updateSchedule(req) {
       const schedule = await db.cnUpdateOneItem(req, req.params.scheduleId);
       resolve(Service.successResponse(schedule, statusCode.OK));
     } catch (error) {
-      console.log('Error update schedule', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -63,8 +59,7 @@ const deleteSchedule = async function deleteSchedule(req) {
       const schedule = await db.cnDeleteOneItem(req.params.scheduleId);
       resolve(Service.successResponse(schedule, statusCode.OK));
     } catch (error) {
-      console.log('Error delete schedule', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };

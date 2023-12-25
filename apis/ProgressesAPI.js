@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const API = require('../controller/index');
+const { CustomError } = require('../submodule/handle-error/index');
 
 const listProgresses = async function listProgresses(req, res) {
   try {
@@ -17,7 +18,7 @@ const createProgress = async function createProgress(req, res) {
     res.status(progress.StatusCode).send(progress.data);
   } catch (error) {
     console.error('API Error create progress', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -27,7 +28,7 @@ const getProgress = async function getProgress(req, res) {
     res.status(progress.StatusCode).send(progress.data);
   } catch (error) {
     console.error('API Error get progress', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 const getRoomProgress = async function getRoomProgress(req, res) {
@@ -36,7 +37,7 @@ const getRoomProgress = async function getRoomProgress(req, res) {
     res.status(roomProgress.StatusCode).send(roomProgress.data);
   } catch (error) {
     console.error('API Error get progress', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -46,7 +47,7 @@ const updateProgress = async function updateProgress(req, res) {
     res.status(progress.StatusCode).send(progress.data);
   } catch (error) {
     console.error('API Error update progress', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -56,7 +57,7 @@ const deleteProgress = async function deleteProgress(req, res) {
     res.status(progress.StatusCode).send(progress.data);
   } catch (error) {
     console.error('API Error delete progress', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 

@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const db = require('../submodule/mongodb/mongodb');
-const { statusCode } = require('../utils/utils');
+const { statusCode } = require('../submodule/handle-error/index');
 const Service = require('./Service');
 
 const listUsers = async function listUsers(req) {

@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const db = require('../submodule/mongodb/mongodb');
-const { statusCode } = require('../utils/utils');
+const { statusCode } = require('../submodule/handle-error/index');
 const Service = require('./Service');
 
 const listClasses = async function listClasses(req) {
@@ -13,8 +13,7 @@ const listClasses = async function listClasses(req) {
       // const classes = await db.cnDeleteAllItem(req, classCollection.classes);
       resolve(Service.successResponse(classes, statusCode.OK));
     } catch (error) {
-      console.log('Error list classes', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -27,8 +26,7 @@ const createClass = async function createClass(req) {
       const insertClass = await db.cnInsertOneItem(req, classCollection.classes);
       resolve(Service.successResponse(insertClass, statusCode.CREATED));
     } catch (error) {
-      console.log('Error create class', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -39,8 +37,7 @@ const getClass = async function getClass(req) {
       const classItem = await db.cnGetItem(req.params.classId);
       resolve(Service.successResponse(classItem, statusCode.OK));
     } catch (error) {
-      console.log('Error get class', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -54,8 +51,7 @@ const updateClass = async function updateClass(req) {
       const classUpdate = await db.cnUpdateOneItem(req, req.params.classId);
       resolve(Service.successResponse(classUpdate, statusCode.OK));
     } catch (error) {
-      console.log('Error update class', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -66,8 +62,7 @@ const deleteClass = async function deleteClass(req) {
       const classDelete = await db.cnDeleteOneItem(req.params.classId);
       resolve(Service.successResponse(classDelete, statusCode.OK));
     } catch (error) {
-      console.log('Error delete class', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };

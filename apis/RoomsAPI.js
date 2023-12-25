@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const API = require('../controller/index');
+const { CustomError } = require('../submodule/handle-error/index');
 
 const listRooms = async function listRooms(req, res) {
   try {
@@ -9,7 +10,7 @@ const listRooms = async function listRooms(req, res) {
     res.status(rooms.StatusCode).send(rooms.data);
   } catch (error) {
     console.log('API error list rooms', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -19,7 +20,7 @@ const createRoom = async function createRoom(req, res) {
     res.status(room.StatusCode).send(room.data);
   } catch (error) {
     console.log('API error create room', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 const uploadRoom = async function uploadRoom(req, res) {
@@ -28,7 +29,7 @@ const uploadRoom = async function uploadRoom(req, res) {
     res.status(room.StatusCode).send(room.data);
   } catch (error) {
     console.log('API error upload room', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 const downloadRoom = async function downloadRoom(req, res) {
@@ -37,7 +38,7 @@ const downloadRoom = async function downloadRoom(req, res) {
     res.status(room.StatusCode).send(room.data);
   } catch (error) {
     console.log('API error download room', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -47,7 +48,7 @@ const getRoom = async function getRoom(req, res) {
     res.status(room.StatusCode).send(room.data);
   } catch (error) {
     console.log('API error get room', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -57,7 +58,7 @@ const updateRoom = async function updateRoom(req, res) {
     res.status(room.StatusCode).send(room.data);
   } catch (error) {
     console.log('API error update room', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -67,10 +68,10 @@ const deleteRoom = async function deleteRoom(req, res) {
     res.status(room.StatusCode).send(room.data);
   } catch (error) {
     console.log('API error delete room', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
 module.exports = {
-  createRoom, listRooms, getRoom, updateRoom, deleteRoom, uploadRoom, downloadRoom
+  createRoom, listRooms, getRoom, updateRoom, deleteRoom, uploadRoom, downloadRoom,
 };

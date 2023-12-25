@@ -1,9 +1,10 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const Service = require('./Service');
 const db = require('../submodule/mongodb/mongodb');
-const { statusCode } = require('../utils/utils');
+const { statusCode } = require('../submodule/handle-error/index');
 
 const listGenerations = async function listGenerations(req) {
   return new Promise(async (resolve, reject) => {
@@ -20,8 +21,7 @@ const listGenerations = async function listGenerations(req) {
       }
       resolve(Service.successResponse(generations, statusCode.OK));
     } catch (error) {
-      console.log('Error list generation', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -34,8 +34,7 @@ const createGeneration = async function createGeneration(req) {
       const generation = await db.cnInsertOneItem(req, generationCollection.generations);
       resolve(Service.successResponse(generation, statusCode.OK));
     } catch (error) {
-      console.log('Error create generation', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -47,8 +46,7 @@ const getGeneration = async function getGeneration(req) {
 
       resolve(Service.successResponse(generation, statusCode.OK));
     } catch (error) {
-      console.log('Error get generation', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -59,8 +57,7 @@ const updateGeneration = async function updateGeneration(req) {
       const generation = await db.cnUpdateOneItem(req, req.params.generationId);
       resolve(Service.successResponse(generation, statusCode.OK));
     } catch (error) {
-      console.log('Error update generation', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -71,8 +68,7 @@ const deleteGeneration = async function deleteGeneration(req) {
       const generation = await db.cnDeleteOneItem(req.params.generationId);
       resolve(Service.successResponse(generation, statusCode.OK));
     } catch (error) {
-      console.log('Error delete generation', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };

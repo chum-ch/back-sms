@@ -1,7 +1,7 @@
 /* Global variables and constants */
 class Service {
-  static rejectResponse(error, StatusCode = 400) {
-    return { error, StatusCode };
+  static rejectResponse(error) {
+    return error;
   }
 
   static successResponse(data, StatusCode = 200) {

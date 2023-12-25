@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const API = require('../controller/index');
+const { CustomError } = require('../submodule/handle-error/index');
 
 const listSchedules = async function listSchedules(req, res) {
   try {
@@ -9,7 +10,7 @@ const listSchedules = async function listSchedules(req, res) {
     res.status(schedules.StatusCode).send(schedules.data);
   } catch (error) {
     console.log('API Error list schedule', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -19,7 +20,7 @@ const createSchedule = async function createSchedule(req, res) {
     res.status(schedule.StatusCode).send(schedule.data);
   } catch (error) {
     console.log('API Error create schedule', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -29,7 +30,7 @@ const getSchedule = async function getSchedule(req, res) {
     res.status(schedule.StatusCode).send(schedule.data);
   } catch (error) {
     console.log('API Error get schedule', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -39,7 +40,7 @@ const updateSchedule = async function updateSchedule(req, res) {
     res.status(schedule.StatusCode).send(schedule.data);
   } catch (error) {
     console.log('API Error update schedule', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -49,7 +50,7 @@ const deleteSchedule = async function deleteSchedule(req, res) {
     res.status(schedule.StatusCode).send(schedule.data);
   } catch (error) {
     console.log('API Error delete schedule', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 

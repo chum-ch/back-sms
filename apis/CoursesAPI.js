@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const API = require('../controller/index');
+const { CustomError } = require('../submodule/handle-error/index');
 
 const listCourses = async function listCourses(req, res) {
   try {
@@ -9,7 +10,7 @@ const listCourses = async function listCourses(req, res) {
     res.status(courses.StatusCode).send(courses.data);
   } catch (error) {
     console.log('API error list courses', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -19,7 +20,7 @@ const createCourse = async function createCourse(req, res) {
     res.status(course.StatusCode).send(course.data);
   } catch (error) {
     console.log('API error create course', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -29,7 +30,7 @@ const getCourse = async function getCourse(req, res) {
     res.status(course.StatusCode).send(course.data);
   } catch (error) {
     console.log('API error get course', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -39,7 +40,7 @@ const updateCourse = async function updateCourse(req, res) {
     res.status(course.StatusCode).send(course.data);
   } catch (error) {
     console.log('API error update course', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -49,7 +50,7 @@ const deleteCourse = async function deleteCourse(req, res) {
     res.status(course.StatusCode).send(course.data);
   } catch (error) {
     console.log('API error delete course', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable no-console */
 const db = require('../submodule/mongodb/mongodb');
-const { statusCode } = require('../utils/utils');
+const { statusCode } = require('../submodule/handle-error/index');
 const Service = require('./Service');
 
 const listSchools = function listSchools(req) {
@@ -11,7 +11,7 @@ const listSchools = function listSchools(req) {
       const schools = await db.cnListItems(req, schoolCollection.schools);
       resolve(Service.successResponse(schools, statusCode.OK));
     } catch (error) {
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -23,8 +23,7 @@ const createSchool = async function createSchool(req) {
       const school = await db.cnInsertOneItem(req, schoolCollection.schools);
       resolve(Service.successResponse(school, statusCode.OK));
     } catch (error) {
-      console.error('Error create school', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -35,8 +34,7 @@ const getSchool = async function getSchool(req) {
       const school = await db.cnGetItem(req.params.schoolId);
       resolve(Service.successResponse(school, statusCode.OK));
     } catch (error) {
-      console.error('Error get school', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -47,8 +45,7 @@ const updateSchool = async function updateSchool(req) {
       const school = await db.cnUpdateOneItem(req, req.params.schoolId);
       resolve(Service.successResponse(school, statusCode.OK));
     } catch (error) {
-      console.error('Error update school', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };
@@ -59,8 +56,7 @@ const deleteSchool = async function deleteSchool(req) {
       const school = await db.cnDeleteOneItem(req.params.schoolId);
       resolve(Service.successResponse(school, statusCode.OK));
     } catch (error) {
-      console.error('Error delete school', error);
-      reject(Service.rejectResponse(error, statusCode.SERVER_ERROR));
+      reject(Service.rejectResponse(error));
     }
   });
 };

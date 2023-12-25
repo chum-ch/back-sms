@@ -1,37 +1,28 @@
-const XLSX = require("xlsx");
-const statusCode = {
-  OK: 200,
-  CREATED: 201,
-  ACCEPTED: 202,
-  BAD_REQUEST: 400,
-  UNAUTHORIZED: 401,
-  NOT_FOUND: 404,
-  NOT_ALLOWED: 405,
-  REQUEST_TIMEOUT: 408,
-  SERVER_ERROR: 500,
-};
+/* eslint-disable no-restricted-syntax */
+const XLSX = require('xlsx');
 
-class uploadFile {
-  validateHeaders(arrHeaderExcel, schemas) {
+class UploadFile {
+  static validateHeaders(arrHeaderExcel, schemas) {
     const { ColumnHeader } = schemas;
     const errorHeaders = [];
     arrHeaderExcel.forEach((key) => {
       if (!ColumnHeader[key]) {
-        errorHeaders.push({ [key]: "Unknown column." });
+        errorHeaders.push({ [key]: 'Unknown column.' });
       }
     });
     return errorHeaders;
   }
-  validateRows(sheetData, schemas) {
+
+  static validateRows(sheetData, schemas) {
     const { ColumnHeader, DataStartingRow } = schemas;
     const resultValidationRow = [];
-    for (let rowIndex = 0; rowIndex < sheetData.length; rowIndex++) {
+    for (let rowIndex = 0; rowIndex < sheetData.length; rowIndex += 1) {
       const errorDetails = {
         RowNumber: DataStartingRow + rowIndex + 1,
         Columns: [],
       };
       for (const [columnIndex, [key, value]] of Object.entries(
-        ColumnHeader
+        ColumnHeader,
       ).entries()) {
         const { Rules, Message } = value;
         const cellValue = sheetData[rowIndex][columnIndex];
@@ -47,17 +38,21 @@ class uploadFile {
     }
     return resultValidationRow;
   }
-  readExcelFile(req, schemas) {
+
+  static readExcelFile(req, schemas) {
     try {
+      let message = '';
       if (!req.file) {
-        throw "File not found";
+        message = 'File not found.';
+        throw message;
       } else {
         const { buffer } = req.file;
         // Read data in file excel
-        const worksheet = XLSX.read(buffer, { type: "buffer" });
+        const worksheet = XLSX.read(buffer, { type: 'buffer' });
         // Loop each sheet.
         if (worksheet.SheetNames.length !== 1) {
-          throw "Please upload only one sheet.";
+          message = 'Please upload only one sheet.';
+          throw message;
         } else {
           const name = worksheet.SheetNames[0];
           const sheet = worksheet.Sheets[name];
@@ -69,17 +64,17 @@ class uploadFile {
             header: 1,
             blankrows: false, // set to false to skip blank row
           });
-          const cleanedData = sheetData.map((row) =>
-            row.map((cell) => cell.replace("*", ""))
-          );
+          const cleanedData = sheetData.map((row) => row.map((cell) => cell.replace('*', '')));
           return cleanedData;
         }
       }
     } catch (error) {
+      console.error(error);
       throw error;
     }
   }
-  validateExcel(req, schemas) {
+
+  static validateExcel(req, schemas) {
     try {
       // Converts each worksheet object to an array
       const resultValidation = {
@@ -90,18 +85,20 @@ class uploadFile {
       const headers = sheetData.shift();
       resultValidation.ErrorColumnHeaders = this.validateHeaders(
         headers,
-        schemas
+        schemas,
       );
       resultValidation.ErrorRows = this.validateRows(sheetData, schemas);
       return resultValidation;
     } catch (error) {
+      console.error(error);
       throw error;
     }
   }
+
   getTemplate(schemas) {
     try {
       const { ColumnHeader } = schemas;
-      let dataDownload = {};
+      const dataDownload = {};
       for (const [key, value] of Object.entries(ColumnHeader)) {
         const { Rules, Value } = value;
         let modifiedKey = key;
@@ -118,27 +115,30 @@ class uploadFile {
       throw new Error(error);
     }
   }
+
   getDataAfterValidateExcel(sheetData) {
     const keys = sheetData[0];
-    const result = sheetData.slice(1).map((row) => {
-      return keys.reduce((obj, key, index) => {
-        obj[key] = row[index];
-        return obj;
-      }, {});
-    });
+    const result = sheetData.slice(1).map((row) => keys.reduce((obj, key, index) => {
+      obj[key] = row[index];
+      return obj;
+    }, {}));
     return result;
   }
 }
 function generateCode() {
   // Generate random combination of two letters and two numbers
-  const randomLetters = [...Array(2)].map(() =>
-    String.fromCharCode(65 + Math.floor(Math.random() * 26))
-  );
+  const randomLetters = [...Array(2)].map(() => String.fromCharCode(65 + Math.floor(Math.random() * 26)));
   const randomNumbers = [...Array(2)].map(() => Math.floor(Math.random() * 10));
-  return randomLetters.join("") + randomNumbers.join("");
+  return randomLetters.join('') + randomNumbers.join('');
 }
 function getBatchProgress(done, total) {
-    const getProgress = Number(Number.parseFloat((done / total) * 100).toFixed(2));
-    return getProgress;
+  const getProgress = Number(
+    Number.parseFloat((done / total) * 100).toFixed(2),
+  );
+  return getProgress;
 }
-module.exports = { statusCode, uploadFile, generateCode, getBatchProgress };
+module.exports = {
+  UploadFile,
+  generateCode,
+  getBatchProgress,
+};

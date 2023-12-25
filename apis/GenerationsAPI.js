@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const API = require('../controller/index');
+const { CustomError } = require('../submodule/handle-error/index');
 
 const listGenerations = async function listGenerations(req, res) {
   try {
@@ -8,7 +9,7 @@ const listGenerations = async function listGenerations(req, res) {
     res.status(generations.StatusCode).send(generations.data);
   } catch (error) {
     console.log('API error list generation', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -18,7 +19,7 @@ const createGeneration = async function createGeneration(req, res) {
     res.status(generation.StatusCode).send(generation.data);
   } catch (error) {
     console.log('API error create generation', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -28,7 +29,7 @@ const getGeneration = async function getGeneration(req, res) {
     res.status(generation.StatusCode).send(generation.data);
   } catch (error) {
     console.log('API error get generation', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -38,7 +39,7 @@ const updateGeneration = async function updateGeneration(req, res) {
     res.status(generation.StatusCode).send(generation.data);
   } catch (error) {
     console.log('API error update generation', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
@@ -48,7 +49,7 @@ const deleteGeneration = async function deleteGeneration(req, res) {
     res.status(generation.StatusCode).send(generation.data);
   } catch (error) {
     console.log('API error delete generation', error);
-    res.status(error.StatusCode).send(error);
+    CustomError.send(res, error);
   }
 };
 
