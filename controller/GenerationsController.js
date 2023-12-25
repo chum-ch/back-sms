@@ -3,7 +3,7 @@
 /* eslint-disable no-console */
 const Service = require('./Service');
 const db = require('../submodule/mongodb/mongodb');
-const statusCode = require('../utils/statusCode');
+const { statusCode } = require('../utils/utils');
 
 const listGenerations = async function listGenerations(req) {
   return new Promise(async (resolve, reject) => {

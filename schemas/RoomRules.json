@@ -1,0 +1,25 @@
+{
+  "DataStartingRow": 5,
+  "ColumnHeader": {
+    "Name": {
+      "Value": "A1",
+      "Rules": [
+        {
+          "Required": true
+        }
+      ],
+      "Format": "string",
+      "Message": "Cell required value."
+    },
+    "Floor": {
+      "Value": "1",
+      "Rules": [
+        {
+          "Required": true
+        }
+      ],
+      "Format": "string",
+      "Message": "Cell required value."
+    }
+  }
+}

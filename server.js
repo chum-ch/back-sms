@@ -32,7 +32,6 @@ const storage = multer.diskStorage({
     cb(null, `IMG-${Date.now()}.${file.mimetype.split('/')[1]}`);
   },
 });
-const upload = multer({ storage });
 app.use(express.static('images'));
 
 // Route School
@@ -41,6 +40,13 @@ app.post('/schools', IndexAPI.SchoolAPI.createSchool);
 app.put('/schools/:schoolId', IndexAPI.SchoolAPI.updateSchool);
 app.get('/schools/:schoolId', IndexAPI.SchoolAPI.getSchool);
 app.delete('/schools/:schoolId', IndexAPI.SchoolAPI.deleteSchool);
+// Route Progress
+app.get('/progresses', IndexAPI.ProgressAPI.listProgresses);
+app.post('/progresses', IndexAPI.ProgressAPI.createProgress);
+app.put('/progresses/:progressId', IndexAPI.ProgressAPI.updateProgress);
+app.get('/progresses/:progressId', IndexAPI.ProgressAPI.getProgress);
+app.get('/progresses/:progressId/room-progresses', IndexAPI.ProgressAPI.getRoomProgress);
+app.delete('/progresses/:progressId', IndexAPI.ProgressAPI.deleteProgress);
 
 // Route Exam
 app.get('/schools/:schoolId/exams', IndexAPI.ExamAPI.listExams);
@@ -75,13 +81,16 @@ app.put('/schools/:schoolId/classes/:classId', IndexAPI.ClassAPI.updateClass);
 app.get('/schools/:schoolId/classes/:classId', IndexAPI.ClassAPI.getClass);
 app.delete('/schools/:schoolId/classes/:classId', IndexAPI.ClassAPI.deleteClass);
 // Route Rooms
+
 app.get('/schools/:schoolId/rooms', IndexAPI.RoomAPI.listRooms);
+app.get('/schools/:schoolId/download-rooms', IndexAPI.RoomAPI.downloadRoom);
+app.post('/schools/:schoolId/upload-rooms', multer().single('uploadedFile'), IndexAPI.RoomAPI.uploadRoom);
 app.post('/schools/:schoolId/rooms', IndexAPI.RoomAPI.createRoom);
 app.put('/schools/:schoolId/rooms/:roomId', IndexAPI.RoomAPI.updateRoom);
 app.get('/schools/:schoolId/rooms/:roomId', IndexAPI.RoomAPI.getRoom);
 app.delete('/schools/:schoolId/rooms/:roomId', IndexAPI.RoomAPI.deleteRoom);
 // Route Student
-app.post('/students/:studentId/upload-images', upload.single('image'), IndexAPI.StudentAPI.uploadImage);
+app.post('/students/:studentId/upload-images', multer({ storage }).single('image'), IndexAPI.StudentAPI.uploadImage);
 app.get('/schools/:schoolId/generations/:generationId/students', IndexAPI.StudentAPI.listStudents);
 app.get('/schools/:schoolId/students', IndexAPI.StudentAPI.listStudentsUnderSchool);
 app.post('/schools/:schoolId/generations/:generationId/students', IndexAPI.StudentAPI.createStudent);
@@ -99,7 +108,3 @@ app.delete('/schools/:schoolId/schedules/:scheduleId', IndexAPI.ScheduleAPI.dele
 app.listen(3003, ()=>{
     console.log('Server running:: => http://localhost:3003');
 })
-
-
-
-module.exports = app;

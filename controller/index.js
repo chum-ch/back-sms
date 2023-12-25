@@ -8,6 +8,7 @@ const ClassesController = require('./ClassesController');
 const StudentsController = require('./StudentsController');
 const SchedulesController = require('./SchedulesController');
 const ExamsController = require('./ExamsController');
+const ProgressesController = require('./ProgressesController');
 
 module.exports = {
   UsersController,
@@ -20,5 +21,6 @@ module.exports = {
   StudentsController,
   SchedulesController,
   ExamsController,
+  ProgressesController,
 
 }

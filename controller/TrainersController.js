@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const db = require('../submodule/mongodb/mongodb');
-const statusCode = require('../utils/statusCode');
+const { statusCode } = require('../utils/utils');
 const Service = require('./Service');
 
 const listTrainers = async function listTrainers(req) {

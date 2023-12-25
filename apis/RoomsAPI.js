@@ -22,6 +22,24 @@ const createRoom = async function createRoom(req, res) {
     res.status(error.StatusCode).send(error);
   }
 };
+const uploadRoom = async function uploadRoom(req, res) {
+  try {
+    const room = await API.RoomsController.uploadRoom(req);
+    res.status(room.StatusCode).send(room.data);
+  } catch (error) {
+    console.log('API error upload room', error);
+    res.status(error.StatusCode).send(error);
+  }
+};
+const downloadRoom = async function downloadRoom(req, res) {
+  try {
+    const room = await API.RoomsController.downloadRoom(req);
+    res.status(room.StatusCode).send(room.data);
+  } catch (error) {
+    console.log('API error download room', error);
+    res.status(error.StatusCode).send(error);
+  }
+};
 
 const getRoom = async function getRoom(req, res) {
   try {
@@ -54,5 +72,5 @@ const deleteRoom = async function deleteRoom(req, res) {
 };
 
 module.exports = {
-  createRoom, listRooms, getRoom, updateRoom, deleteRoom,
+  createRoom, listRooms, getRoom, updateRoom, deleteRoom, uploadRoom, downloadRoom
 };

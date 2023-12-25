@@ -8,6 +8,7 @@ const StudentAPI = require('./StudentsAPI');
 const TrainerAPI = require('./TrainersAPI');
 const ExamAPI = require('./ExamsAPI');
 const UserAPI = require('./UsersAPI');
+const ProgressAPI = require('./ProgressesAPI');
 
 module.exports = {
   SchoolAPI,
@@ -20,4 +21,5 @@ module.exports = {
   TrainerAPI,
   UserAPI,
   ExamAPI,
+  ProgressAPI,
 };
