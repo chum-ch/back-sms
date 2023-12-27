@@ -16,8 +16,8 @@ app.use(
   }),
 );
 app.get('/', (req, res) => {
-    res.status(200).send('Welcome to my sms! 🥰');
-})
+  res.status(200).send('Welcome to my sms! 🥰');
+});
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -104,7 +104,6 @@ app.put('/schools/:schoolId/schedules/:scheduleId', IndexAPI.ScheduleAPI.updateS
 app.get('/schools/:schoolId/schedules/:scheduleId', IndexAPI.ScheduleAPI.getSchedule);
 app.delete('/schools/:schoolId/schedules/:scheduleId', IndexAPI.ScheduleAPI.deleteSchedule);
 
-
-app.listen(3003, ()=>{
-    console.log('Server running:: => http://localhost:3003');
-})
+app.listen(3003, () => {
+  console.log('Server running:: => http://localhost:3003');
+});

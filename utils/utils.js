@@ -48,24 +48,20 @@ class UploadFile {
   static readExcelFile(req, schemas) {
     try {
       if (!req.file) {
-        throw new CustomError(
-          {
-            key: KeyError.InputValidation,
-            message: 'Required file Excel upload.',
-          },
-        );
+        throw new CustomError({
+          key: KeyError.InputValidation,
+          message: 'Required file Excel upload.',
+        });
       } else {
         const { buffer } = req.file;
         // Read data in file excel
         const worksheet = XLSX.read(buffer, { type: 'buffer' });
         // Loop each sheet.
         if (worksheet.SheetNames.length !== 1) {
-          throw new CustomError(
-            {
-              key: KeyError.InputValidation,
-              message: 'Please upload only one sheet.',
-            },
-          );
+          throw new CustomError({
+            key: KeyError.InputValidation,
+            message: 'Please upload only one sheet.',
+          });
         } else {
           const name = worksheet.SheetNames[0];
           const sheet = worksheet.Sheets[name];
@@ -123,7 +119,7 @@ class UploadFile {
         });
         dataDownload[modifiedKey] = Value;
       }
-      return [dataDownload];
+      return dataDownload;
     } catch (error) {
       const err = error;
       throw err;
