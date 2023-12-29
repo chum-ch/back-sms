@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable no-console */
 const db = require('../submodule/mongodb/mongodb');
@@ -47,6 +48,9 @@ const getRoomProgress = async function getRoomProgress(req) {
       const { data, data: { Total } } = await getProgress(req);
       const roomData = await db.cnListItems(req, rooms, { PROGRESSES_ID: req.params.progressId });
       const progressBatchUpload = getBatchProgress(roomData.length, Total);
+      if (progressBatchUpload >= 100) {
+        await deleteProgress(req);
+      }
       data.DoneProgresses = progressBatchUpload;
       resolve(Service.successResponse(data, statusCode.OK));
     } catch (error) {

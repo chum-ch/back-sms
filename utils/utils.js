@@ -5,37 +5,43 @@ const { CustomError, KeyError } = require('../submodule/handle-error/index');
 class UploadFile {
   static validateHeaders(arrHeaderExcel, schemas) {
     const { ColumnHeader } = schemas;
-    const errorHeaders = [];
+    let errorHeaders = [];
     arrHeaderExcel.forEach((key) => {
       if (!ColumnHeader[key]) {
         errorHeaders.push({ [key]: 'Unknown column.' });
       }
     });
+    const combinedObjectHeader = Object.assign({}, ...errorHeaders);
+    if (Object.keys(combinedObjectHeader).length > 0) {
+      errorHeaders = [combinedObjectHeader];
+    }
     return errorHeaders;
   }
 
-  static validateRows(sheetData, schemas) {
+  static validateRows(headers, sheetData, schemas) {
     try {
       const { ColumnHeader, DataStartingRow } = schemas;
       const resultValidationRow = [];
       for (let rowIndex = 0; rowIndex < sheetData.length; rowIndex += 1) {
         const errorDetails = {
           RowNumber: DataStartingRow + rowIndex + 1,
-          Columns: [],
         };
-        for (const [columnIndex, [key, value]] of Object.entries(
-          ColumnHeader,
-        ).entries()) {
-          const { Rules, Message } = value;
+        const columns = [];
+        for (let columnIndex = 0; columnIndex < headers.length; columnIndex += 1) {
           const cellValue = sheetData[rowIndex][columnIndex];
-          for (const rule of Rules) {
-            if (rule.Required && !cellValue) {
-              errorDetails.Columns.push({ [key]: Message });
+          const objHeader = ColumnHeader[headers[columnIndex]];
+          if (objHeader) {
+            const { Rules, Message } = objHeader;
+            for (const rule of Rules) {
+              if (rule.Required && !cellValue) {
+                columns.push({ [headers[columnIndex]]: Message });
+              }
             }
           }
         }
-        if (errorDetails.Columns.length > 0) {
-          resultValidationRow.push(errorDetails);
+        if (columns.length > 0) {
+          const combinedObject = Object.assign({}, ...columns);
+          resultValidationRow.push({ ...errorDetails, ...combinedObject });
         }
       }
       return resultValidationRow;
@@ -96,7 +102,7 @@ class UploadFile {
         headers,
         schemas,
       );
-      resultValidation.ErrorRows = this.validateRows(sheetData, schemas);
+      resultValidation.ErrorRows = this.validateRows(headers, sheetData, schemas);
       return resultValidation;
     } catch (error) {
       const err = error;

@@ -49,12 +49,7 @@ const uploadRoom = async function uploadRoom(req) {
         resultValidation.ErrorColumnHeaders.length > 0
         || resultValidation.ErrorRows.length > 0
       ) {
-        throw new CustomError(
-          {
-            key: KeyError.InputValidation,
-            message: resultValidation,
-          },
-        );
+        resolve(Service.successResponse(resultValidation, statusCode.BAD_REQUEST));
       } else {
         const { progresses } = await db.cnListCollection();
         const sheetData = UploadFile.readExcelFile(req, roomRule);
