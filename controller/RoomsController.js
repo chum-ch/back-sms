@@ -44,12 +44,11 @@ const createRoom = async function createRoom(req) {
 const uploadRoom = async function uploadRoom(req) {
   return new Promise(async (resolve, reject) => {
     try {
-      const resultValidation = UploadFile.validateExcel(req, roomRule);
-      if (
-        resultValidation.ErrorColumnHeaders.length > 0
-        || resultValidation.ErrorRows.length > 0
+      const { ErrorColumnHeaders, ErrorRows } = UploadFile.validateExcel(req, roomRule);
+      if ((ErrorColumnHeaders && ErrorColumnHeaders.length > 0)
+        || (ErrorRows && ErrorRows.length > 0)
       ) {
-        resolve(Service.successResponse(resultValidation, statusCode.BAD_REQUEST));
+        resolve(Service.successResponse({ ErrorColumnHeaders, ErrorRows }, statusCode.BAD_REQUEST));
       } else {
         const { progresses } = await db.cnListCollection();
         const sheetData = UploadFile.readExcelFile(req, roomRule);

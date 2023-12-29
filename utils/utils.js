@@ -103,6 +103,12 @@ class UploadFile {
         schemas,
       );
       resultValidation.ErrorRows = this.validateRows(headers, sheetData, schemas);
+      if (resultValidation.ErrorColumnHeaders.length === 0) {
+        delete resultValidation.ErrorColumnHeaders;
+      }
+      if (resultValidation.ErrorRows.length === 0) {
+        delete resultValidation.ErrorRows;
+      }
       return resultValidation;
     } catch (error) {
       const err = error;
