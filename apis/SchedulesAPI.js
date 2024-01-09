@@ -33,6 +33,24 @@ const getSchedule = async function getSchedule(req, res) {
     CustomError.send(res, error);
   }
 };
+const uploadSchedule = async function uploadSchedule(req, res) {
+  try {
+    const room = await API.SchedulesController.uploadSchedule(req);
+    res.status(room.StatusCode).send(room.data);
+  } catch (error) {
+    console.log('API error upload room', error);
+    CustomError.send(res, error);
+  }
+};
+const downloadSchedule = async function downloadSchedule(req, res) {
+  try {
+    const room = await API.SchedulesController.downloadSchedule(req);
+    res.status(room.StatusCode).send(room.data);
+  } catch (error) {
+    console.log('API error download room', error);
+    CustomError.send(res, error);
+  }
+};
 
 const updateSchedule = async function updateSchedule(req, res) {
   try {
@@ -55,5 +73,5 @@ const deleteSchedule = async function deleteSchedule(req, res) {
 };
 
 module.exports = {
-  createSchedule, listSchedules, getSchedule, updateSchedule, deleteSchedule,
+  createSchedule, listSchedules, getSchedule, updateSchedule, deleteSchedule, downloadSchedule, uploadSchedule,
 };

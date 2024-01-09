@@ -52,14 +52,14 @@ const uploadRoom = async function uploadRoom(req) {
       } else {
         const { progresses } = await db.cnListCollection();
         const sheetData = UploadFile.readExcelFile(req, roomRule);
-        const data = UploadFile.getDataAfterValidateExcel(sheetData);
+        const dataFromExcel = UploadFile.getDataAfterValidateExcel(sheetData);
         req.body = {
           SCHOOLS_ID: req.params.schoolId,
-          Total: data.length,
+          Total: dataFromExcel.length,
         };
         const progress = await db.cnInsertOneItem(req, progresses);
-        for (let index = 0; index < data.length; index += 1) {
-          const roomData = data[index];
+        for (let index = 0; index < dataFromExcel.length; index += 1) {
+          const roomData = dataFromExcel[index];
           roomData.PROGRESSES_ID = progress.PROGRESSES_ID;
           req.body = roomData;
           await createRoom(req);
@@ -75,8 +75,7 @@ const uploadRoom = async function uploadRoom(req) {
 const downloadRoom = async function downloadRoom() {
   return new Promise(async (resolve, reject) => {
     try {
-      const result = UploadFile.getTemplate(roomRule);
-      resolve(Service.successResponse(result, statusCode.OK));
+      resolve(Service.successResponse(roomRule, statusCode.OK));
     } catch (error) {
       reject(Service.rejectResponse(error));
     }

@@ -46,6 +46,7 @@ app.post('/progresses', IndexAPI.ProgressAPI.createProgress);
 app.put('/progresses/:progressId', IndexAPI.ProgressAPI.updateProgress);
 app.get('/progresses/:progressId', IndexAPI.ProgressAPI.getProgress);
 app.get('/progresses/:progressId/room-progresses', IndexAPI.ProgressAPI.getRoomProgress);
+app.get('/progresses/:progressId/schedule-progresses', IndexAPI.ProgressAPI.getScheduleProgress);
 app.delete('/progresses/:progressId', IndexAPI.ProgressAPI.deleteProgress);
 
 // Route Exam
@@ -99,6 +100,8 @@ app.get('/schools/:schoolId/generations/:generationId/students/:studentId', Inde
 app.delete('/schools/:schoolId/generations/:generationId/students/:studentId', IndexAPI.StudentAPI.deleteStudent);
 // Route Schedule
 app.get('/schools/:schoolId/schedules', IndexAPI.ScheduleAPI.listSchedules);
+app.get('/schools/:schoolId/download-schedules', IndexAPI.ScheduleAPI.downloadSchedule);
+app.post('/schools/:schoolId/upload-schedules', multer().single('uploadedFile'), IndexAPI.ScheduleAPI.uploadSchedule);
 app.post('/schools/:schoolId/schedules', IndexAPI.ScheduleAPI.createSchedule);
 app.put('/schools/:schoolId/schedules/:scheduleId', IndexAPI.ScheduleAPI.updateSchedule);
 app.get('/schools/:schoolId/schedules/:scheduleId', IndexAPI.ScheduleAPI.getSchedule);

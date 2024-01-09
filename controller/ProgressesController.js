@@ -58,6 +58,24 @@ const getRoomProgress = async function getRoomProgress(req) {
     }
   });
 };
+const getScheduleProgress = async function getScheduleProgress(req) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { schedules } = await db.cnListCollection();
+      const scheduleData = await db.cnListItems(req, schedules, { PROGRESSES_ID: req.params.progressId });
+      const { data, data: { Total } } = await getProgress(req);
+      const progressBatchUpload = getBatchProgress(scheduleData.length, Total);
+      if (progressBatchUpload >= 100) {
+        await deleteProgress(req);
+      }
+      data.DoneProgresses = progressBatchUpload;
+      resolve(Service.successResponse(data, statusCode.OK));
+    } catch (error) {
+      reject(Service.rejectResponse(error));
+    }
+  });
+};
+
 
 const updateProgress = async function updateProgress(req) {
   return new Promise(async (resolve, reject) => {
@@ -82,5 +100,5 @@ const deleteProgress = async function deleteProgress(req) {
 };
 
 module.exports = {
-  createProgress, listProgresses, getRoomProgress, updateProgress, deleteProgress, getProgress,
+  createProgress, listProgresses, getRoomProgress, getScheduleProgress, updateProgress, deleteProgress, getProgress,
 };

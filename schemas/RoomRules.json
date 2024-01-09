@@ -3,6 +3,7 @@
   "ColumnHeader": {
     "Name": {
       "Value": "A1",
+      "Label": "Name",
       "Rules": [
         {
           "Required": true
@@ -13,6 +14,7 @@
     },
     "Floor": {
       "Value": "1",
+      "Label": "Floor",
       "Rules": [
         {
           "Required": true

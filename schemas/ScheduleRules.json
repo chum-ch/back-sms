@@ -1,0 +1,16 @@
+{
+  "DataStartingRow": 5,
+  "ColumnHeader": {
+    "Date": {
+      "Value": "2023-10-09",
+      "Label": "Date",
+      "Rules": [
+        {
+          "Required": true
+        }
+      ],
+      "Format": "date",
+      "Message": "Cell required value."
+    }
+  }
+}

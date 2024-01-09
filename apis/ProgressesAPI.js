@@ -40,6 +40,15 @@ const getRoomProgress = async function getRoomProgress(req, res) {
     CustomError.send(res, error);
   }
 };
+const getScheduleProgress = async function getScheduleProgress(req, res) {
+  try {
+    const roomProgress = await API.ProgressesController.getScheduleProgress(req);
+    res.status(roomProgress.StatusCode).send(roomProgress.data);
+  } catch (error) {
+    console.error('API Error get progress', error);
+    CustomError.send(res, error);
+  }
+};
 
 const updateProgress = async function updateProgress(req, res) {
   try {
@@ -62,5 +71,5 @@ const deleteProgress = async function deleteProgress(req, res) {
 };
 
 module.exports = {
-  createProgress, listProgresses, updateProgress, deleteProgress, getRoomProgress, getProgress
+  createProgress, listProgresses, updateProgress, deleteProgress, getRoomProgress, getScheduleProgress, getProgress
 };
