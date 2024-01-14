@@ -11,6 +11,94 @@
       ],
       "Format": "date",
       "Message": "Cell required value."
+    },
+    "Trainer": {
+      "Value": "SRUN Soknoeurn",
+      "Label": "Trainer",
+      "Rules": [
+        {
+          "Required": true
+        }
+      ],
+      "Format": "string",
+      "Message": "Cell required value."
+    },
+    "Gender": {
+      "Value": "Female",
+      "Label": "Gender",
+      "Rules": [
+        {
+          "Required": true
+        }
+      ],
+      "Format": "string",
+      "Message": "Cell required value."
+    },
+    "Courses": {
+      "Value": "Math",
+      "Label": "Courses",
+      "Rules": [
+        {
+          "Required": true
+        }
+      ],
+      "Format": "string",
+      "Message": "Cell required value."
+    },
+    "Credit": {
+      "Value": "10",
+      "Label": "Credit",
+      "Rules": [
+        {
+          "Required": true
+        }
+      ],
+      "Format": "number",
+      "Message": "Cell required value."
+    },
+    "Classes": {
+      "Value": "Grade 1",
+      "Label": "Classes",
+      "Rules": [
+        {
+          "Required": true
+        }
+      ],
+      "Format": "string",
+      "Message": "Cell required value."
+    },
+    "Room": {
+      "Value": "A1",
+      "Label": "Room",
+      "Rules": [
+        {
+          "Required": true
+        }
+      ],
+      "Format": "string",
+      "Message": "Cell required value."
+    },
+    "StartTime": {
+      "Value": "07:30",
+      "Label": "Start time",
+      "Rules": [
+        {
+          "Required": true
+        }
+      ],
+      "Format": "time",
+      "Message": "Cell required value."
+    },
+    "EndTime": {
+      "Value": "09:30",
+      "Label": "End time",
+      "Rules": [
+        {
+          "Required": true
+        }
+      ],
+      "Format": "time",
+      "Message": "Cell required value."
     }
   }
 }

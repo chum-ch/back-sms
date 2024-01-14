@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-syntax */
+
 const XLSX = require('xlsx');
 const { CustomError, KeyError } = require('../submodule/handle-error/index');
 
@@ -7,7 +8,14 @@ class UploadFile {
     const { ColumnHeader } = schemas;
     let errorHeaders = [];
     arrHeaderExcel.forEach((key) => {
-      if (!ColumnHeader[key]) {
+      const splitAsterisk = key.split('*');
+      if (ColumnHeader[splitAsterisk[0]]) {
+        const { Rules } = ColumnHeader[splitAsterisk[0]];
+        if (Rules.some((rule) => rule.Required === true && splitAsterisk.length === 1)) {
+          // Push column error when column is required but not found asterisk in the header
+          errorHeaders.push({ [key]: 'Unknown column.' });
+        }
+      } else {
         errorHeaders.push({ [key]: 'Unknown column.' });
       }
     });
@@ -79,8 +87,7 @@ class UploadFile {
             header: 1,
             blankrows: false, // set to false to skip blank row
           });
-          const cleanedData = sheetData.map((row) => row.map((cell) => cell.replace('*', '')));
-          return cleanedData;
+          return sheetData;
         }
       }
     } catch (error) {
@@ -97,12 +104,14 @@ class UploadFile {
         ErrorRows: [],
       };
       const sheetData = this.readExcelFile(req, schemas);
-      const headers = sheetData.shift();
+      let headers = sheetData.shift();
       resultValidation.ErrorColumnHeaders = this.validateHeaders(
         headers,
         schemas,
       );
-      resultValidation.ErrorRows = this.validateRows(headers, sheetData, schemas);
+      const cleanedData = sheetData.map((row) => row.map((cell) => cell.replace('*', '')));
+      headers = headers.map((item) => item.replace('*', ''));
+      resultValidation.ErrorRows = this.validateRows(headers, cleanedData, schemas);
       if (resultValidation.ErrorColumnHeaders.length === 0) {
         delete resultValidation.ErrorColumnHeaders;
       }
@@ -139,7 +148,7 @@ class UploadFile {
   }
 
   static getDataAfterValidateExcel(sheetData) {
-    const keys = sheetData[0];
+    const keys = sheetData[0].map((item) => item.replace('*', ''));
     const result = sheetData.slice(1).map((row) => keys.reduce((obj, key, index) => {
       obj[key] = row[index];
       return obj;
@@ -164,3 +173,9 @@ module.exports = {
   generateCode,
   getBatchProgress,
 };
+
+module.exports.ClassesController = require('../controller/ClassesController');
+module.exports.CoursesController = require('../controller/CoursesController');
+module.exports.RoomsController = require('../controller/RoomsController');
+module.exports.SchedulesController = require('../controller/SchedulesController');
+module.exports.TrainersController = require('../controller/TrainersController');

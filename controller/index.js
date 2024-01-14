@@ -1,26 +1,25 @@
-const UsersController = require('./UsersController');
-const SchoolsController = require('./SchoolsController');
-const TrainersController = require('./TrainersController');
-const CoursesController = require('./CoursesController');
-const GenerationsController = require('./GenerationsController');
-const RoomsController = require('./RoomsController');
 const ClassesController = require('./ClassesController');
-const StudentsController = require('./StudentsController');
-const SchedulesController = require('./SchedulesController');
+const CoursesController = require('./CoursesController');
 const ExamsController = require('./ExamsController');
+const GenerationsController = require('./GenerationsController');
 const ProgressesController = require('./ProgressesController');
+const RoomsController = require('./RoomsController');
+const SchedulesController = require('./SchedulesController');
+const SchoolsController = require('./SchoolsController');
+const StudentsController = require('./StudentsController');
+const TrainersController = require('./TrainersController');
+const UsersController = require('./UsersController');
 
 module.exports = {
-  UsersController,
-  SchoolsController,
-  TrainersController,
-  CoursesController,
-  GenerationsController,
-  RoomsController,
   ClassesController,
-  StudentsController,
-  SchedulesController,
+  CoursesController,
   ExamsController,
+  GenerationsController,
   ProgressesController,
-
-}
+  RoomsController,
+  SchedulesController,
+  SchoolsController,
+  StudentsController,
+  TrainersController,
+  UsersController,
+};
