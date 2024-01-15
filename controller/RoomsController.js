@@ -30,12 +30,23 @@ const createRoom = async function createRoom(req) {
       if (!input.Name) {
         throw new CustomError({
           key: KeyError.InputValidation,
+          message: 'Room name is required.',
         });
       }
       req.body.SCHOOLS_ID = req.params.schoolId;
       const roomCollection = await db.cnListCollection();
-      const room = await db.cnInsertOneItem(req, roomCollection.rooms);
-      resolve(Service.successResponse(room, statusCode.CREATED));
+      req.query = {
+        SCHOOLS_ID: req.params.schoolId,
+        Name: input.Name,
+      };
+      const { data: [existingRoom] } = await listRooms(req);
+      if (!existingRoom) {
+        req.body = input;
+        const room = await db.cnInsertOneItem(req, roomCollection.rooms);
+        resolve(Service.successResponse(room, statusCode.CREATED));
+      } else {
+        resolve(Service.successResponse(existingRoom, statusCode.CREATED));
+      }
     } catch (error) {
       reject(Service.rejectResponse(error));
     }

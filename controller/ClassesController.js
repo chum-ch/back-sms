@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const db = require('../submodule/mongodb/mongodb');
-const { statusCode } = require('../submodule/handle-error/index');
+const { statusCode, CustomError, KeyError } = require('../submodule/handle-error/index');
 const Service = require('./Service');
 
 const listClasses = async function listClasses(req) {
@@ -21,10 +21,32 @@ const listClasses = async function listClasses(req) {
 const createClass = async function createClass(req) {
   return new Promise(async (resolve, reject) => {
     try {
+      const input = req.body;
+      if (!input.Name) {
+        throw new CustomError({
+          key: KeyError.InputValidation,
+          message: 'Class name is required.',
+        });
+      } else if (!input.Room || Object.keys(input.Room).length === 0) {
+        throw new CustomError({
+          key: KeyError.InputValidation,
+          message: 'Room name is required.',
+        });
+      }
       req.body.SCHOOLS_ID = req.params.schoolId;
-      const classCollection = await db.cnListCollection();
-      const insertClass = await db.cnInsertOneItem(req, classCollection.classes);
-      resolve(Service.successResponse(insertClass, statusCode.CREATED));
+      req.query = {
+        SCHOOLS_ID: req.params.schoolId,
+        Name: input.Name,
+      };
+      const { data: [existingClass] } = await listClasses(req);
+      if (!existingClass) {
+        req.body = input;
+        const classCollection = await db.cnListCollection();
+        const insertClass = await db.cnInsertOneItem(req, classCollection.classes);
+        resolve(Service.successResponse(insertClass, statusCode.CREATED));
+      } else {
+        resolve(Service.successResponse(existingClass, statusCode.CREATED));
+      }
     } catch (error) {
       reject(Service.rejectResponse(error));
     }

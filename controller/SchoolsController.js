@@ -1,7 +1,7 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable no-console */
 const db = require('../submodule/mongodb/mongodb');
-const { statusCode } = require('../submodule/handle-error/index');
+const { statusCode, CustomError, KeyError } = require('../submodule/handle-error/index');
 const Service = require('./Service');
 
 const listSchools = function listSchools(req) {
@@ -19,6 +19,13 @@ const listSchools = function listSchools(req) {
 const createSchool = async function createSchool(req) {
   return new Promise(async (resolve, reject) => {
     try {
+      const input = req.body;
+      if (!input.Name) {
+        throw new CustomError({
+          key: KeyError.InputValidation,
+          message: 'School name is required.',
+        });
+      }
       const schoolCollection = await db.cnListCollection();
       const school = await db.cnInsertOneItem(req, schoolCollection.schools);
       resolve(Service.successResponse(school, statusCode.OK));

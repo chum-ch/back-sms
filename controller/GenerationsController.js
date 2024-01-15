@@ -4,7 +4,7 @@
 /* eslint-disable no-console */
 const Service = require('./Service');
 const db = require('../submodule/mongodb/mongodb');
-const { statusCode } = require('../submodule/handle-error/index');
+const { statusCode, CustomError, KeyError } = require('../submodule/handle-error/index');
 
 const listGenerations = async function listGenerations(req) {
   return new Promise(async (resolve, reject) => {
@@ -29,10 +29,27 @@ const listGenerations = async function listGenerations(req) {
 const createGeneration = async function createGeneration(req) {
   return new Promise(async (resolve, reject) => {
     try {
+      const input = req.body;
+      if (!input.Name) {
+        throw new CustomError({
+          key: KeyError.InputValidation,
+          message: 'Generation name is required.',
+        });
+      }
       req.body.SCHOOLS_ID = req.params.schoolId;
-      const generationCollection = await db.cnListCollection();
-      const generation = await db.cnInsertOneItem(req, generationCollection.generations);
-      resolve(Service.successResponse(generation, statusCode.OK));
+      req.query = {
+        SCHOOLS_ID: req.params.schoolId,
+        Name: input.Name,
+      };
+      const { data: [existingGeneration] } = await listGenerations(req);
+      if (!existingGeneration) {
+        req.body = input;
+        const generationCollection = await db.cnListCollection();
+        const generation = await db.cnInsertOneItem(req, generationCollection.generations);
+        resolve(Service.successResponse(generation, statusCode.OK));
+      } else {
+        resolve(Service.successResponse(existingGeneration, statusCode.CREATED));
+      }
     } catch (error) {
       reject(Service.rejectResponse(error));
     }

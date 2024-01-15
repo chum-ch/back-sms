@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 const db = require('../submodule/mongodb/mongodb');
-const { statusCode } = require('../submodule/handle-error/index');
+const { statusCode, CustomError, KeyError } = require('../submodule/handle-error/index');
 const Service = require('./Service');
 
 const listCourses = async function listCourses(req) {
@@ -21,10 +21,32 @@ const listCourses = async function listCourses(req) {
 const createCourse = async function createCourse(req) {
   return new Promise(async (resolve, reject) => {
     try {
+      const input = req.body;
+      if (!input.Name) {
+        throw new CustomError({
+          key: KeyError.InputValidation,
+          message: 'Course name is required.',
+        });
+      } else if (!input.Credit) {
+        throw new CustomError({
+          key: KeyError.InputValidation,
+          message: 'Credit is required.',
+        });
+      }
       req.body.SCHOOLS_ID = req.params.schoolId;
-      const courseCollection = await db.cnListCollection();
-      const course = await db.cnInsertOneItem(req, courseCollection.courses);
-      resolve(Service.successResponse(course, statusCode.CREATED));
+      req.query = {
+        SCHOOLS_ID: req.params.schoolId,
+        Name: input.Name,
+      };
+      const { data: [existingCourse] } = await listCourses(req);
+      if (!existingCourse) {
+        req.body = input;
+        const courseCollection = await db.cnListCollection();
+        const course = await db.cnInsertOneItem(req, courseCollection.courses);
+        resolve(Service.successResponse(course, statusCode.CREATED));
+      } else {
+        resolve(Service.successResponse(existingCourse, statusCode.CREATED));
+      }
     } catch (error) {
       reject(Service.rejectResponse(error));
     }
