@@ -52,6 +52,7 @@ app.delete('/progresses/:progressId', IndexAPI.ProgressAPI.deleteProgress);
 // Route Exam
 app.get('/schools/:schoolId/exams', IndexAPI.ExamAPI.listExams);
 app.post('/schools/:schoolId/exams', IndexAPI.ExamAPI.createExam);
+app.post('/schools/:schoolId/exams/:examId/submits', IndexAPI.ExamAPI.submitExam);
 app.put('/schools/:schoolId/exams/:examId', IndexAPI.ExamAPI.updateExam);
 app.get('/schools/:schoolId/exams/:examId', IndexAPI.ExamAPI.getExam);
 app.delete('/schools/:schoolId/exams/:examId', IndexAPI.ExamAPI.deleteExam);
@@ -110,3 +111,29 @@ app.delete('/schools/:schoolId/schedules/:scheduleId', IndexAPI.ScheduleAPI.dele
 app.listen(3003, () => {
   console.log('Server running:: => http://localhost:3003');
 });
+
+const nodemailer = require('nodemailer');
+const { smsTemplate } = require('./emails/smsTemplate');
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'notifications.cnnoreply@gmail.com',
+    pass: 'wxmiqbvxnhfcqwym',
+  },
+});
+
+const mailOptions = {
+  from: 'notifications.cnnoreply@gmail.com',
+  to: 'yoeurnchum@gmail.com',
+  subject: 'OOP Exam',
+  html: smsTemplate('Chum YOEURN', 'OOP State Exam', ''),
+};
+
+// transporter.sendMail(mailOptions, (error, info) => {
+//   if (error) {
+//     console.log(error);
+//   } else {
+//     console.log(`Email sent: ${info.response}`);
+//   }
+// });

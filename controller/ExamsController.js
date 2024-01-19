@@ -5,6 +5,30 @@ const db = require('../submodule/mongodb/mongodb');
 const { statusCode } = require('../submodule/handle-error/index');
 const Service = require('./Service');
 
+function getPointsEarnedPerQuestion(userAnswers, options, points) {
+  let earnedPoint = points;
+  // 1. Count the IsCorrect answer in Options
+  const correctOptionsCount = options.filter((option) => option.IsCorrect).length;
+
+  // 2. Count the IsCorrect answer from UserAnswer
+  let copyUserAnswer = userAnswers;
+  if (!Array.isArray(copyUserAnswer)) {
+    copyUserAnswer = [copyUserAnswer]; // Convert to array if not already an array
+  }
+  const correctUserAnswerCount = copyUserAnswer.filter((answer) => answer.IsCorrect).length;
+  switch (true) {
+    case correctUserAnswerCount === 0:
+      earnedPoint = 0;
+      break;
+    case correctUserAnswerCount < correctOptionsCount && correctUserAnswerCount > 0 && points > 0:
+      earnedPoint = points / correctOptionsCount;
+      break;
+    default:
+      break;
+  }
+  return earnedPoint;
+}
+
 const listExams = async function listExams(req) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -23,8 +47,39 @@ const createExam = async function createExam(req) {
     try {
       req.body.SCHOOLS_ID = req.params.schoolId;
       const examCollection = await db.cnListCollection();
+      const { Questions } = req.body;
+      const totalPoints = Questions.reduce((accumulator, currentObject) => {
+        const points = parseInt(currentObject.Points, 10);
+        const isNumber = Number(points);
+        if (isNumber) {
+          return accumulator + points;
+        }
+        return accumulator;
+      }, 0);
+      req.body.TotalQuestions = Questions.length;
+      req.body.TotalPoints = totalPoints;
       const exam = await db.cnInsertOneItem(req, examCollection.exams);
       resolve(Service.successResponse(exam, statusCode.CREATED));
+    } catch (error) {
+      reject(Service.rejectResponse(error));
+    }
+  });
+};
+const submitExam = async function submitExam(req) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      req.body.SCHOOLS_ID = req.params.schoolId;
+      const { Questions } = req.body;
+      Questions.forEach((question) => {
+        const { UserAnswer = [], Options = [], Points = 0 } = question;
+        const q = question;
+        q.PointsEarnedPerQuestion = getPointsEarnedPerQuestion(UserAnswer, Options, Points);
+      });
+      const totalEarnedPoints = Questions.reduce((sum, question) => sum + question.PointsEarnedPerQuestion, 0);
+      req.body.TotalEarnedPoints = totalEarnedPoints;
+      const examCollection = await db.cnListCollection();
+      // const exam = await db.cnInsertOneItem(req, examCollection.exams);
+      resolve(Service.successResponse(req.body, statusCode.CREATED));
     } catch (error) {
       reject(Service.rejectResponse(error));
     }
@@ -65,5 +120,5 @@ const deleteExam = async function deleteExam(req) {
 };
 
 module.exports = {
-  createExam, listExams, getExam, updateExam, deleteExam,
+  createExam, listExams, getExam, updateExam, deleteExam, submitExam,
 };
