@@ -17,6 +17,8 @@ const listGenerations = async function listGenerations(req) {
           req.query = { GENERATIONS_ID: generation.GENERATIONS_ID };
           const listStudents = await db.cnListItems(req, collectionDB.students);
           generations[indexGeneration].StudentNumber = listStudents.length;
+          generations[indexGeneration].MaleTotals = listStudents.filter((student) => student.Gender.Value === 'Male').length;
+          generations[indexGeneration].FemaleTotals = listStudents.filter((student) => student.Gender.Value === 'Female').length;
         }
       }
       resolve(Service.successResponse(generations, statusCode.OK));

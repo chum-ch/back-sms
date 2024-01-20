@@ -6,7 +6,9 @@ const { CustomError } = require('../submodule/handle-error/index');
 const listExams = async function listExams(req, res) {
   try {
     const exams = await API.ExamsController.listExams(req);
-    console.log(req.hostname);
+    // console.log(req);
+    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    console.log('Full URL:', fullUrl);
     // const exams = await db.cnDeleteAllItem(req, trainerCollection.exams);
     res.status(exams.StatusCode).send(exams.data);
   } catch (error) {
