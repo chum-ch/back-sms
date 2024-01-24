@@ -3,6 +3,7 @@ const SchoolAPI = require('./SchoolsAPI');
 const CourseAPI = require('./CoursesAPI');
 const GenerationAPI = require('./GenerationsAPI');
 const RoomAPI = require('./RoomsAPI');
+const SisWeddingAPI = require('./SisWeddingAPI');
 const ScheduleAPI = require('./SchedulesAPI');
 const StudentAPI = require('./StudentsAPI');
 const TrainerAPI = require('./TrainersAPI');
@@ -22,4 +23,5 @@ module.exports = {
   UserAPI,
   ExamAPI,
   ProgressAPI,
+  SisWeddingAPI,
 };

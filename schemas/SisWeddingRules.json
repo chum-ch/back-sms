@@ -1,0 +1,27 @@
+{
+  "DataStartingRow": 5,
+  "ColumnHeader": {
+    "ឈ្មោះ": {
+      "Value": "យឿន ជុំ",
+      "Label": "ឈ្មោះ",
+      "Rules": [
+        {
+          "Required": false
+        }
+      ],
+      "Format": "string",
+      "Message": "Cell required value."
+    },
+    "ភូមិ": {
+      "Value": "ត្របែក",
+      "Label": "ភូមិ",
+      "Rules": [
+        {
+          "Required": false
+        }
+      ],
+      "Format": "string",
+      "Message": "Cell required value."
+    }
+  }
+}

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable no-console */
@@ -41,6 +42,23 @@ const getProgress = async function getProgress(req) {
   });
 };
 
+const getSisWeddingProgress = async function getSisWeddingProgress(req) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { wedding } = await db.cnListCollection();
+      const { data, data: { Total } } = await getProgress(req);
+      const sisWeddingData = await db.cnListItems(req, wedding, { PROGRESSES_ID: req.params.progressId });
+      const progressBatchUpload = getBatchProgress(sisWeddingData.length, Total);
+      if (progressBatchUpload >= 100) {
+        await deleteProgress(req);
+      }
+      data.DoneProgresses = progressBatchUpload;
+      resolve(Service.successResponse(data, statusCode.OK));
+    } catch (error) {
+      reject(Service.rejectResponse(error));
+    }
+  });
+};
 const getRoomProgress = async function getRoomProgress(req) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -76,7 +94,6 @@ const getScheduleProgress = async function getScheduleProgress(req) {
   });
 };
 
-
 const updateProgress = async function updateProgress(req) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -100,5 +117,5 @@ const deleteProgress = async function deleteProgress(req) {
 };
 
 module.exports = {
-  createProgress, listProgresses, getRoomProgress, getScheduleProgress, updateProgress, deleteProgress, getProgress,
+  createProgress, listProgresses, getRoomProgress, getScheduleProgress, updateProgress, deleteProgress, getProgress, getSisWeddingProgress,
 };

@@ -45,6 +45,7 @@ app.get('/progresses', IndexAPI.ProgressAPI.listProgresses);
 app.post('/progresses', IndexAPI.ProgressAPI.createProgress);
 app.put('/progresses/:progressId', IndexAPI.ProgressAPI.updateProgress);
 app.get('/progresses/:progressId', IndexAPI.ProgressAPI.getProgress);
+app.get('/progresses/:progressId/sis-wedding-progresses', IndexAPI.ProgressAPI.getSisWeddingProgress);
 app.get('/progresses/:progressId/room-progresses', IndexAPI.ProgressAPI.getRoomProgress);
 app.get('/progresses/:progressId/schedule-progresses', IndexAPI.ProgressAPI.getScheduleProgress);
 app.delete('/progresses/:progressId', IndexAPI.ProgressAPI.deleteProgress);
@@ -82,6 +83,14 @@ app.post('/schools/:schoolId/classes', IndexAPI.ClassAPI.createClass);
 app.put('/schools/:schoolId/classes/:classId', IndexAPI.ClassAPI.updateClass);
 app.get('/schools/:schoolId/classes/:classId', IndexAPI.ClassAPI.getClass);
 app.delete('/schools/:schoolId/classes/:classId', IndexAPI.ClassAPI.deleteClass);
+// Route wedding sis
+app.get('/wedding/sis', IndexAPI.SisWeddingAPI.listSisWedding);
+app.get('/wedding/sis/download', IndexAPI.SisWeddingAPI.downloadSisWedding);
+app.post('/wedding/sis/upload', multer().single('uploadedFile'), IndexAPI.SisWeddingAPI.uploadSisWedding);
+app.post('/wedding/sis', IndexAPI.SisWeddingAPI.createSisWedding);
+app.put('/wedding/sis/:sisWeddingId', IndexAPI.SisWeddingAPI.updateSisWedding);
+app.get('/wedding/sis/:sisWeddingId', IndexAPI.SisWeddingAPI.getSisWedding);
+app.delete('/wedding/sis/:sisWeddingId', IndexAPI.SisWeddingAPI.deleteSisWedding);
 // Route Rooms
 
 app.get('/schools/:schoolId/rooms', IndexAPI.RoomAPI.listRooms);
@@ -91,6 +100,7 @@ app.post('/schools/:schoolId/rooms', IndexAPI.RoomAPI.createRoom);
 app.put('/schools/:schoolId/rooms/:roomId', IndexAPI.RoomAPI.updateRoom);
 app.get('/schools/:schoolId/rooms/:roomId', IndexAPI.RoomAPI.getRoom);
 app.delete('/schools/:schoolId/rooms/:roomId', IndexAPI.RoomAPI.deleteRoom);
+
 // Route Student
 app.post('/students/:studentId/upload-images', multer({ storage }).single('image'), IndexAPI.StudentAPI.uploadImage);
 app.get('/schools/:schoolId/generations/:generationId/students', IndexAPI.StudentAPI.listStudents);

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-console */
 const API = require('../controller/index');
 const { CustomError } = require('../submodule/handle-error/index');
@@ -26,6 +27,15 @@ const getProgress = async function getProgress(req, res) {
   try {
     const progress = await API.ProgressesController.getProgress(req);
     res.status(progress.StatusCode).send(progress.data);
+  } catch (error) {
+    console.error('API Error get progress', error);
+    CustomError.send(res, error);
+  }
+};
+const getSisWeddingProgress = async function getSisWeddingProgress(req, res) {
+  try {
+    const sisWeddingProgress = await API.ProgressesController.getSisWeddingProgress(req);
+    res.status(sisWeddingProgress.StatusCode).send(sisWeddingProgress.data);
   } catch (error) {
     console.error('API Error get progress', error);
     CustomError.send(res, error);
@@ -71,5 +81,5 @@ const deleteProgress = async function deleteProgress(req, res) {
 };
 
 module.exports = {
-  createProgress, listProgresses, updateProgress, deleteProgress, getRoomProgress, getScheduleProgress, getProgress
+  createProgress, listProgresses, updateProgress, deleteProgress, getRoomProgress, getScheduleProgress, getProgress, getSisWeddingProgress,
 };
