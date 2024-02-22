@@ -1,9 +1,9 @@
 {
-  "DataStartingRow": 5,
+  "DataStartingRow": 0,
   "ColumnHeader": {
-    "ឈ្មោះ": {
+    "Name": {
       "Value": "យឿន ជុំ",
-      "Label": "ឈ្មោះ",
+      "Label": "Name",
       "Rules": [
         {
           "Required": false
@@ -12,9 +12,20 @@
       "Format": "string",
       "Message": "Cell required value."
     },
-    "ភូមិ": {
+    "Village": {
       "Value": "ត្របែក",
-      "Label": "ភូមិ",
+      "Label": "Village",
+      "Rules": [
+        {
+          "Required": false
+        }
+      ],
+      "Format": "string",
+      "Message": "Cell required value."
+    },
+    "Money": {
+      "Value": "ថវិកា",
+      "Label": "Money",
       "Rules": [
         {
           "Required": false
